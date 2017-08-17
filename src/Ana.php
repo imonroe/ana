@@ -3,6 +3,7 @@
 namespace imonroe\ana;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Ana extends Model{
 	/*
@@ -41,9 +42,9 @@ class Ana extends Model{
 		return date(DATE_RFC3339, $timestamp);
 	}
 
-	public static function is_today($str_date){
+	public static function is_today($date_string){
 		$today_string = date('M j, Y', time());
-		$target_string = date('M j, Y', strtotime($str_date));
+		$target_string = date('M j, Y', strtotime($date_string));
 		if ($today_string == $target_string){ return true; } else { return false; }
 	}
 
@@ -134,7 +135,7 @@ class Ana extends Model{
 		  $errfile = $error["file"];
 		  $errline = $error["line"];
 		  $errstr  = $error["message"];
-		  new LogEntry("Error ($errno) in $errfile on line $errline: $errstr");
+		  Log::info("Error ($errno) in $errfile on line $errline: $errstr");
 		  header("HTTP/1.1 500 Internal Server Error");
 		}
 	}
@@ -237,8 +238,16 @@ class Ana extends Model{
 	}
 
 	public static function current_page_url() {
-		$pageURL = 'http'; 
-		$pageURL .= "://";
+		if (isset($_SERVER['HTTPS']) &&
+			($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+			isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+			$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+			$protocol = 'https://';
+		}
+		else {
+			$protocol = 'http://';
+		} 
+		$pageURL = $protocol."://";
 		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
 		return $pageURL;
 	}
@@ -246,11 +255,9 @@ class Ana extends Model{
 	public static function get_url_segment($number){
 		$output = false;
 		$page_url = $_SERVER['REQUEST_URI'];
-
 		if (strpos($page_url, '?')){
 			$page_url = strtok($page_url,'?');	
 		}
-
 		$url_array = explode("/", $page_url);
 		$arr_len = count($url_array);
 		if ($number <= ($arr_len-1)){
@@ -351,75 +358,6 @@ class Ana extends Model{
 		return $result;
 	}
 
-	public static function moon_phase($timestamp = ''){
-		/*
-	modified from http://www.voidware.com/moon_phase.htm
-	*/
-		if (empty($timestamp)) {
-			$timestamp = time();
-		}
-		$year = date('Y', $timestamp);
-		$month = date('n', $timestamp);
-		$day = date('j', $timestamp);
-		$c = $e = $jd = $b = 0;
-
-		if ($month < 3){
-			$year--;
-			$month += 12;
-		}
-
-		++$month;
-		$c = 365.25 * $year;
-		$e = 30.6 * $month;
-		$jd = $c + $e + $day - 694039.09;	//jd is total days elapsed
-		$jd /= 29.5305882;					//divide by the moon cycle
-		$b = (int) $jd;						//int(jd) -> b, take integer part of jd
-		$jd -= $b;							//subtract integer part to leave fractional part of original jd
-		$b = round($jd * 8);				//scale fraction from 0-8 and round
-
-		if ($b >= 8 ){
-			$b = 0;//0 and 8 are the same so turn 8 into 0
-		}
-
-		switch ($b){
-			case 0:
-				return 'New Moon';
-				break;
-			case 1:
-				return 'Waxing Crescent Moon';
-				break;
-			case 2:
-				return 'Quarter Moon';
-				break;
-			case 3:
-				return 'Waxing Gibbous Moon';
-				break;
-			case 4:
-				return 'Full Moon';
-				break;
-			case 5:
-				return 'Waning Gibbous Moon';
-				break;
-			case 6:
-				return 'Last Quarter Moon';
-				break;
-			case 7:
-				return 'Waning Crescent Moon';
-				break;
-			default:
-				return 'Error';
-		}
-
-	}
-
-	public static function get_weather_data_by_zip($zipcode){
-		$api_key = 'd2fc52ef33c2f77b27735f48d7fa62c8';
-		$api_url = 'http://api.openweathermap.org/data/2.5/weather?zip='.$zipcode.',us&units=imperial&APPID='.$api_key;
-		$json_response = self::quick_curl($api_url);
-		$output = json_decode($json_response, true);
-		return $output;
-	}
-
 	public static function loading_spinner(){
 		// only works with FontAwesome included.
 		return '<i class="fa fa-cog fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>';
@@ -472,7 +410,7 @@ class Ana extends Model{
 	/* end of Metaprogramming functions */
 ///////////////////////////////////////////////////////////////////
 
-	/* C  ommand-line functions */
+	/* Command-line functions */
 
 	/*
    	* prompt a user for information
@@ -620,8 +558,6 @@ class Ana extends Model{
 		}
 		return $_ARG;
 	}
-
-
 	/* end command-line functions*/
 ///////////////////////////////////////////////////////////////////
 
