@@ -5,335 +5,365 @@ namespace imonroe\ana;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
-class Ana extends Model{
-	/*
+class Ana extends Model
+{
+    /*
 	This is the newest version of my Ana helper library, that I've converted for use in Laravel.
 	It's probably not of interest to anyone except me, but if you should find some use for it 
 	in some other project, please drop me a line at ian@ianmonroe.com and let me know!
 	*/
 
-	function __construct(){}
-	function __destruct(){}	
+    function __construct()
+    {
+    }
+    function __destruct()
+    {
+    }
 
 ///////////////////////////////////////////////////////////////////	
-	/* Date, time functions in this section. */
+    /* Date, time functions in this section. */
 
-	public static function standard_date_format($timestamp){
-		// My preferred datetime format for presentation
-		if ($timestamp == ''){
-			$timestamp = time();	
-		}
-		return date('M j, Y, g:i a T', $timestamp );
-	}
+    public static function standard_date_format($timestamp)
+    {
+        // My preferred datetime format for presentation
+        if ($timestamp == '') {
+            $timestamp = time();
+        }
+        return date('M j, Y, g:i a T', $timestamp);
+    }
 
-	public static function sql_datetime($timestamp = ''){
-		// Returns an MySQL-friendly datetime string.
-		if ($timestamp == ''){
-			$timestamp = time();	
-		}
-		return date("Y-m-d H:i:s", $timestamp);	
-	}
+    public static function sql_datetime($timestamp = '')
+    {
+        // Returns an MySQL-friendly datetime string.
+        if ($timestamp == '') {
+            $timestamp = time();
+        }
+        return date("Y-m-d H:i:s", $timestamp);
+    }
 
-	public static function google_datetime($timestamp = ''){
-		// Google likes RFC3339-style datetimes
-		if ($timestamp == ''){
-			$timestamp = time();	
-		}
-		return date(DATE_RFC3339, $timestamp);
-	}
+    public static function google_datetime($timestamp = '')
+    {
+        // Google likes RFC3339-style datetimes
+        if ($timestamp == '') {
+            $timestamp = time();
+        }
+        return date(DATE_RFC3339, $timestamp);
+    }
 
-	public static function is_today($date_string){
-		$today_string = date('M j, Y', time());
-		$target_string = date('M j, Y', strtotime($date_string));
-		if ($today_string == $target_string){ return true; } else { return false; }
-	}
+    public static function is_today($date_string)
+    {
+        $today_string = date('M j, Y', time());
+        $target_string = date('M j, Y', strtotime($date_string));
+        if ($today_string == $target_string) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public static function sooner_than($date_string){
-		 if ( (strtotime("now")) < (strtotime($date_string)) ) {
-			 return true;
-		 } else {
-			return false; 
-		 }
-	}
-
-
-	public static function later_than($date_string){
-		 if ( (strtotime("now")) > (strtotime($date_string)) ) {
-			 return true;
-		 } else {
-			return false; 
-		 }
-	}
-
-	public static function print_relative_date($date){
-		$valid_date = (is_numeric($date) && strtotime($date) === FALSE) ? $date : strtotime($date);
-			$diff = time() - $valid_date;
-			if ($diff > 0) {
-				if ($diff < 60) {
-					return $diff . " second" . $this->_plural($diff) . " ago";
-				}
-				$diff = round($diff / 60);
-
-				if ($diff < 60) {
-					return $diff . " minute" . $this->_plural($diff) . " ago";
-				}
-				$diff = round($diff / 60);
-
-				if ($diff < 24) {
-					return $diff . " hour" . $this->_plural($diff) . " ago";
-				}
-				$diff = round($diff / 24);
-
-				if ($diff < 7) {
-					return "about " . $diff . " day" . $this->_plural($diff) . " ago";
-				}
-				$diff = round($diff / 7);
-
-				if ($diff < 4) {
-					return "about " . $diff . " week" . $this->_plural($diff) . " ago";
-				}
-
-				return "on " . date("F j, Y", $valid_date);
-			} else {
-				if ($diff > -60) {
-					return "in " . -$diff . " second" . $this->_plural($diff);
-				}
-				$diff = round($diff / 60);
-
-				if ($diff > -60) {
-					return "in " . -$diff . " minute" . $this->_plural($diff);
-				}
-				$diff = round($diff / 60);
-
-				if ($diff > -24) {
-					return "in " . -$diff . " hour" . $this->_plural($diff);
-				}
-				$diff = round($diff / 24);
-
-				if ($diff > -7) {
-					return "in " . -$diff . " day" . $this->_plural($diff);
-				}
-				$diff = round($diff / 7);
-
-				if ($diff > -4) {
-					return "in " . -$diff . " week" . $this->_plural($diff);
-				}	
-
-				return "on " . date("F j, Y", $valid_date);
-			}	
-	}
+    public static function sooner_than($date_string)
+    {
+        if ((strtotime("now")) < (strtotime($date_string))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
-	/* end of Date and Time functions */
+    public static function later_than($date_string)
+    {
+        if ((strtotime("now")) > (strtotime($date_string))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function print_relative_date($date)
+    {
+        $valid_date = (is_numeric($date) && strtotime($date) === false) ? $date : strtotime($date);
+            $diff = time() - $valid_date;
+        if ($diff > 0) {
+            if ($diff < 60) {
+                return $diff . " second" . $this->_plural($diff) . " ago";
+            }
+            $diff = round($diff / 60);
+
+            if ($diff < 60) {
+                return $diff . " minute" . $this->_plural($diff) . " ago";
+            }
+            $diff = round($diff / 60);
+
+            if ($diff < 24) {
+                return $diff . " hour" . $this->_plural($diff) . " ago";
+            }
+            $diff = round($diff / 24);
+
+            if ($diff < 7) {
+                return "about " . $diff . " day" . $this->_plural($diff) . " ago";
+            }
+            $diff = round($diff / 7);
+
+            if ($diff < 4) {
+                return "about " . $diff . " week" . $this->_plural($diff) . " ago";
+            }
+
+            return "on " . date("F j, Y", $valid_date);
+        } else {
+            if ($diff > -60) {
+                return "in " . -$diff . " second" . $this->_plural($diff);
+            }
+            $diff = round($diff / 60);
+
+            if ($diff > -60) {
+                return "in " . -$diff . " minute" . $this->_plural($diff);
+            }
+            $diff = round($diff / 60);
+
+            if ($diff > -24) {
+                return "in " . -$diff . " hour" . $this->_plural($diff);
+            }
+            $diff = round($diff / 24);
+
+            if ($diff > -7) {
+                return "in " . -$diff . " day" . $this->_plural($diff);
+            }
+            $diff = round($diff / 7);
+
+            if ($diff > -4) {
+                return "in " . -$diff . " week" . $this->_plural($diff);
+            }
+
+            return "on " . date("F j, Y", $valid_date);
+        }
+    }
+
+
+    /* end of Date and Time functions */
 ///////////////////////////////////////////////////////////////////
-	/*  Error handling functions in this section */
+    /*  Error handling functions in this section */
 
-	function fatal_handler() {
-		$error = error_get_last();
-		if( $error !== NULL && $error['type'] == E_ERROR) {
-		  $errno   = $error["type"];
-		  $errfile = $error["file"];
-		  $errline = $error["line"];
-		  $errstr  = $error["message"];
-		  Log::info("Error ($errno) in $errfile on line $errline: $errstr");
-		  header("HTTP/1.1 500 Internal Server Error");
-		}
-	}
+    function fatal_handler()
+    {
+        $error = error_get_last();
+        if ($error !== null && $error['type'] == E_ERROR) {
+            $errno   = $error["type"];
+            $errfile = $error["file"];
+            $errline = $error["line"];
+            $errstr  = $error["message"];
+            Log::info("Error ($errno) in $errfile on line $errline: $errstr");
+            header("HTTP/1.1 500 Internal Server Error");
+        }
+    }
 
-	/* end of error handling functions */
+    /* end of error handling functions */
 ///////////////////////////////////////////////////////////////////	
-	/* Array manipulation functions in this section */
+    /* Array manipulation functions in this section */
 
-	public static function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
-		$sort_col = array();
-		foreach ($arr as $key=> $row) {
-			$sort_col[$key] = $row[$col];
-		}
-		array_multisort($sort_col, $dir, $arr);
-	}
+    public static function array_sort_by_column(&$arr, $col, $dir = SORT_ASC)
+    {
+        $sort_col = array();
+        foreach ($arr as $key => $row) {
+            $sort_col[$key] = $row[$col];
+        }
+        array_multisort($sort_col, $dir, $arr);
+    }
 
-	public static function object_to_array ($object) {
-   		return json_decode(json_encode($object), true);
-	}
+    public static function object_to_array($object)
+    {
+        return json_decode(json_encode($object), true);
+    }
 
-	/* end of Array manipulation functions */
+    /* end of Array manipulation functions */
 ///////////////////////////////////////////////////////////////////	
-	/* String manipulation functions in this section */
+    /* String manipulation functions in this section */
 
-	public static function word_limit($haystack, $ubound){
-		$return_val = explode(" ", $haystack);
-		return implode(" ", array_splice($return_val, 0, $ubound));
-	}// end function word_limit
+    public static function word_limit($haystack, $ubound)
+    {
+        $return_val = explode(" ", $haystack);
+        return implode(" ", array_splice($return_val, 0, $ubound));
+    }// end function word_limit
 
-	public static function convert_to_utf($input){
-		// Fairly aggressive, but works.
-		return strip_tags(iconv(mb_detect_encoding($text), "UTF-8//IGNORE", $input));
-	}
+    public static function convert_to_utf($input)
+    {
+        // Fairly aggressive, but works.
+        return strip_tags(iconv(mb_detect_encoding($text), "UTF-8//IGNORE", $input));
+    }
 
-	public static function plain_text($input){
-		// takes a string, strips out tags, HTML entities, etc.  Returns plain UTF-8 string.
-		$output = strip_tags($input);
-		$output = str_replace("&nbsp;", " ", $output);
-		$output = html_entity_decode($output, ENT_COMPAT, 'UTF-8');
-		return $output;	
-	}
+    public static function plain_text($input)
+    {
+        // takes a string, strips out tags, HTML entities, etc.  Returns plain UTF-8 string.
+        $output = strip_tags($input);
+        $output = str_replace("&nbsp;", " ", $output);
+        $output = html_entity_decode($output, ENT_COMPAT, 'UTF-8');
+        return $output;
+    }
 
-	public static function trim_string_to_length($str, $len){
-		// limits to a length; doesn't pretty it up at all.
-		return mb_strimwidth($str, 0, $len);	
-	}
+    public static function trim_string_to_length($str, $len)
+    {
+        // limits to a length; doesn't pretty it up at all.
+        return mb_strimwidth($str, 0, $len);
+    }
 
 
-	/* end of string manipulation functions */
+    /* end of string manipulation functions */
 ///////////////////////////////////////////////////////////////////	
-	/* Numeric manipulation functions go here */
+    /* Numeric manipulation functions go here */
 
-	public static function even_or_odd($number){
-		$int_number = cint($number);
-		$return_val = '';
-		if ($int_number < 0){
-			// normalize negative numbers.
-			$int_number = $int_number * -1;	
-		}
-		if ($int_number = 0){
-			$return_val = false;
-		} elseif ($int_number = 1){
-			$return_val = 'odd';
-		} elseif ($int_number > 1){
-			if ($int_number % 2){
-				$return_val = 'odd';
-			} else {
-				$return_val = 'even';
-			}
-		} else {
-			return 'even_odd error';	
-		}
-		return $return_val;
-	} // end even_or_odd
+    public static function even_or_odd($number)
+    {
+        $int_number = cint($number);
+        $return_val = '';
+        if ($int_number < 0) {
+            // normalize negative numbers.
+            $int_number = $int_number * -1;
+        }
+        if ($int_number = 0) {
+            $return_val = false;
+        } elseif ($int_number = 1) {
+            $return_val = 'odd';
+        } elseif ($int_number > 1) {
+            if ($int_number % 2) {
+                $return_val = 'odd';
+            } else {
+                $return_val = 'even';
+            }
+        } else {
+            return 'even_odd error';
+        }
+        return $return_val;
+    } // end even_or_odd
 
-	public static function random_number($lowbound = 1, $highbound = 100){
-		// returns a random integer between the low bound and the high bound.
-		// default range is 1-100
-		// Should be suitible for cryptographically secure random number generation.
-		// see: http://php.net/manual/en/function.random-int.php
-		return random_int($lowbound , $highbound);		
-	}
+    public static function random_number($lowbound = 1, $highbound = 100)
+    {
+        // returns a random integer between the low bound and the high bound.
+        // default range is 1-100
+        // Should be suitible for cryptographically secure random number generation.
+        // see: http://php.net/manual/en/function.random-int.php
+        return random_int($lowbound, $highbound);
+    }
 
-	public static function random_hex($bytes=8){
-		// returns a hex value corresponding with the given number of random bytes.
-		// cryptographically secure.  Good for seeds and salts, etc.
-		$r_bytes = random_bytes($bytes);
-		return bin2hex($r_bytes); 	
-	}
+    public static function random_hex($bytes = 8)
+    {
+        // returns a hex value corresponding with the given number of random bytes.
+        // cryptographically secure.  Good for seeds and salts, etc.
+        $r_bytes = random_bytes($bytes);
+        return bin2hex($r_bytes);
+    }
 
-	/* end numeric manipulation functions */
+    /* end numeric manipulation functions */
 ///////////////////////////////////////////////////////////////////
-	/* Uncategorized functions in this section */
+    /* Uncategorized functions in this section */
 
-	public static function create_nonce(){
-		$seed_timestamp = date("Y-m-d H:i:s");
-		$seed_salt = openssl_random_pseudo_bytes(128);
-		$seed = $seed_salt . $seed_timestamp;
-		return sha1($seed);
-	}
+    public static function create_nonce()
+    {
+        $seed_timestamp = date("Y-m-d H:i:s");
+        $seed_salt = openssl_random_pseudo_bytes(128);
+        $seed = $seed_salt . $seed_timestamp;
+        return sha1($seed);
+    }
 
-	public static function current_page_url() {
-		if (isset($_SERVER['HTTPS']) &&
-			($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-			isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-			$_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-			$protocol = 'https://';
-		}
-		else {
-			$protocol = 'http://';
-		} 
-		$pageURL = $protocol."://";
-		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-		return $pageURL;
-	}
+    public static function current_page_url()
+    {
+        if (isset($_SERVER['HTTPS']) &&
+            ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        } else {
+            $protocol = 'http://';
+        }
+        $pageURL = $protocol."://";
+        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+        return $pageURL;
+    }
 
-	public static function get_url_segment($number){
-		$output = false;
-		$page_url = $_SERVER['REQUEST_URI'];
-		if (strpos($page_url, '?')){
-			$page_url = strtok($page_url,'?');	
-		}
-		$url_array = explode("/", $page_url);
-		$arr_len = count($url_array);
-		if ($number <= ($arr_len-1)){
-			$output = mysql_real_escape_string($url_array[$number]);
-		}
-		return $output;
-	}
+    public static function get_url_segment($number)
+    {
+        $output = false;
+        $page_url = $_SERVER['REQUEST_URI'];
+        if (strpos($page_url, '?')) {
+            $page_url = strtok($page_url, '?');
+        }
+        $url_array = explode("/", $page_url);
+        $arr_len = count($url_array);
+        if ($number <= ($arr_len-1)) {
+            $output = mysql_real_escape_string($url_array[$number]);
+        }
+        return $output;
+    }
 
-	public static function is_valid_link($link){
-		// Feed it a URL, returns an HTTP status code. 
-		// swiped from here: http://www.codezuzu.com/2015/03/how-to-validate-linkurl-in-php/	
-		$ch = curl_init($link);
-		curl_setopt($ch,  CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch,  CURLOPT_HEADER, TRUE); // Include the headers
-		curl_setopt($ch,  CURLOPT_NOBODY, TRUE); // Make HEAD request
-		$response = curl_exec($ch);
-		if ( $response === false ){
-			// something went wrong, assume not valid
-			return false;
-		}
-		$http_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if (in_array($http_code, array(200, 301, 302, 303, 307)) === false) {
-			// not a valid http code to asume success, link is not valid
-			return false;
-		}
-		curl_close($ch); 
-		return $http_code;
-	}
+    public static function is_valid_link($link)
+    {
+        // Feed it a URL, returns an HTTP status code.
+        // swiped from here: http://www.codezuzu.com/2015/03/how-to-validate-linkurl-in-php/
+        $ch = curl_init($link);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true); // Include the headers
+        curl_setopt($ch, CURLOPT_NOBODY, true); // Make HEAD request
+        $response = curl_exec($ch);
+        if ($response === false) {
+            // something went wrong, assume not valid
+            return false;
+        }
+        $http_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (in_array($http_code, array(200, 301, 302, 303, 307)) === false) {
+            // not a valid http code to asume success, link is not valid
+            return false;
+        }
+        curl_close($ch);
+        return $http_code;
+    }
 
-	public static function quick_curl($link){
-		$ch = curl_init($link);
-		curl_setopt($ch,  CURLOPT_RETURNTRANSFER, TRUE);
-		$response = curl_exec($ch);
-		if ( $response === false ){
-			// something went wrong, assume not valid
-			return false;
-		}
-		$http_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		if (in_array($http_code, array(200, 301, 302, 303, 307)) === false) {
-			// not a valid http code to asume success, link is not valid
-			return false;
-		}
-		curl_close($ch); 
-		return $response;
+    public static function quick_curl($link)
+    {
+        $ch = curl_init($link);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        if ($response === false) {
+            // something went wrong, assume not valid
+            return false;
+        }
+        $http_code   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (in_array($http_code, array(200, 301, 302, 303, 307)) === false) {
+            // not a valid http code to asume success, link is not valid
+            return false;
+        }
+        curl_close($ch);
+        return $response;
+    }
 
-	}
-
-	public static function get_ip() {
-		// swiped from here: https://www.chriswiegman.com/2014/05/getting-correct-ip-address-php/
-		/*
+    public static function get_ip()
+    {
+        // swiped from here: https://www.chriswiegman.com/2014/05/getting-correct-ip-address-php/
+        /*
 			The goal here is to get the actual IP address of the requester, even behind a reverse proxy, etc.
 		*/
-		//Just get the headers if we can or else use the SERVER global
-		if ( function_exists( 'apache_request_headers' ) ) {
-			$headers = apache_request_headers();
-		} else {
-			$headers = $_SERVER;
-		}
-		//Get the forwarded IP if it exists
-		if ( array_key_exists( 'X-Forwarded-For', $headers ) && filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 ) ) {
-			$the_ip = $headers['X-Forwarded-For'];
-		} elseif ( array_key_exists( 'HTTP_X_FORWARDED_FOR', $headers ) && filter_var( $headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 )
-		) {
-			$the_ip = $headers['HTTP_X_FORWARDED_FOR'];
-		} else {
+        //Just get the headers if we can or else use the SERVER global
+        if (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+        } else {
+            $headers = $_SERVER;
+        }
+        //Get the forwarded IP if it exists
+        if (array_key_exists('X-Forwarded-For', $headers) && filter_var($headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $the_ip = $headers['X-Forwarded-For'];
+        } elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $headers) && filter_var($headers['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)
+        ) {
+            $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $the_ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        }
+        return $the_ip;
+    }
 
-			$the_ip = filter_var( $_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
-		}
-		return $the_ip;
-	}
-
-	public static function submit_post_request($url, $data){
-		// swiped from:
-		// http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php	
-		// use key 'http' even if you send the request to https://...
-		/*
+    public static function submit_post_request($url, $data)
+    {
+        // swiped from:
+        // http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php
+        // use key 'http' even if you send the request to https://...
+        /*
 		$options = array(
 			'http' => array(
 				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -344,221 +374,235 @@ class Ana extends Model{
 		$context  = stream_context_create($options);
 		$result = file_get_contents($url, false, $context);
 		*/
-		echo print_r($data);
-		$fields_string = '';
-		foreach($data as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
-		rtrim($fields_string,'&');
-		echo '------'.$fields_string;
-		$ch = curl_init();
-		curl_setopt($ch,CURLOPT_URL,$url);
-		curl_setopt($ch,CURLOPT_POST,count($data));
-		curl_setopt($ch,CURLOPT_POSTFIELDS,$fields_string);
-		$result = curl_exec($ch);
+        echo print_r($data);
+        $fields_string = '';
+        foreach ($data as $key => $value) {
+            $fields_string .= $key.'='.$value.'&';
+        }
+        rtrim($fields_string, '&');
+        echo '------'.$fields_string;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, count($data));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        $result = curl_exec($ch);
 
-		return $result;
-	}
+        return $result;
+    }
 
-	public static function loading_spinner(){
-		// only works with FontAwesome included.
-		return '<i class="fa fa-cog fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>';
-	}
+    public static function loading_spinner()
+    {
+        // only works with FontAwesome included.
+        return '<i class="fa fa-cog fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>';
+    }
 
-	/* end of uncategorized functions*/
+    /* end of uncategorized functions*/
 ///////////////////////////////////////////////////////////////////
-	/* Metaprogramming functions*/
+    /* Metaprogramming functions*/
 
-	public static function code_safe_name($string){
-	  // we want to take a string like "Custom aspect test" 
-	  // and turn it into "CustomAspectTest"
-	  // so we can predictably use class names in later code.
-	  $output = ucwords($string);
-	  $output = preg_replace("/[^A-Za-z0-9 ]/", '', $output);
-	  $output = preg_replace('/\s+/', '', $output);
-	  return $output;
-	}
+    public static function code_safe_name($string)
+    {
+      // we want to take a string like "Custom aspect test"
+      // and turn it into "CustomAspectTest"
+      // so we can predictably use class names in later code.
+        $output = ucwords($string);
+        $output = preg_replace("/[^A-Za-z0-9 ]/", '', $output);
+        $output = preg_replace('/\s+/', '', $output);
+        return $output;
+    }
 
-	/**
- 	* Class casting
-	* found here: https://stackoverflow.com/questions/2226103/how-to-cast-objects-in-php#2232065
- 	*
- 	* @param string|object $destination
- 	* @param object $sourceObject
- 	* @return object
- 	*/
-	function cast($destination, $sourceObject){
-		if (is_string($destination)) {
-			$destination = new $destination();
-		}
-		$sourceReflection = new ReflectionObject($sourceObject);
-		$destinationReflection = new ReflectionObject($destination);
-		$sourceProperties = $sourceReflection->getProperties();
-		foreach ($sourceProperties as $sourceProperty) {
-			$sourceProperty->setAccessible(true);
-			$name = $sourceProperty->getName();
-			$value = $sourceProperty->getValue($sourceObject);
-			if ($destinationReflection->hasProperty($name)) {
-				$propDest = $destinationReflection->getProperty($name);
-				$propDest->setAccessible(true);
-				$propDest->setValue($destination,$value);
-			} else {
-				$destination->$name = $value;
-			}
-		}
-		return $destination;
-	}
+    /**
+    * Class casting
+    * found here: https://stackoverflow.com/questions/2226103/how-to-cast-objects-in-php#2232065
+    *
+    * @param string|object $destination
+    * @param object $sourceObject
+    * @return object
+    */
+    function cast($destination, $sourceObject)
+    {
+        if (is_string($destination)) {
+            $destination = new $destination();
+        }
+        $sourceReflection = new ReflectionObject($sourceObject);
+        $destinationReflection = new ReflectionObject($destination);
+        $sourceProperties = $sourceReflection->getProperties();
+        foreach ($sourceProperties as $sourceProperty) {
+            $sourceProperty->setAccessible(true);
+            $name = $sourceProperty->getName();
+            $value = $sourceProperty->getValue($sourceObject);
+            if ($destinationReflection->hasProperty($name)) {
+                $propDest = $destinationReflection->getProperty($name);
+                $propDest->setAccessible(true);
+                $propDest->setValue($destination, $value);
+            } else {
+                $destination->$name = $value;
+            }
+        }
+        return $destination;
+    }
 
-	/* end of Metaprogramming functions */
+    /* end of Metaprogramming functions */
 ///////////////////////////////////////////////////////////////////
 
-	/* Command-line functions */
+    /* Command-line functions */
 
-	/*
+    /*
    	* prompt a user for information
 	* @param string $prompt
   	* @return string
    	*/
-   	static function ask_user($prompt){
-		echo PHP_EOL.$prompt.' ';
-		$input = trim(fgets(STDIN));
-		return $input;
-	}
+    static function ask_user($prompt)
+    {
+        echo PHP_EOL.$prompt.' ';
+        $input = trim(fgets(STDIN));
+        return $input;
+    }
 
-	/*
+    /*
 	* Generates an error message and exits the program.
 	* @param string $msg
   	* @return none
 	*/
-	static function error_out($msg){
-		echo $msg.PHP_EOL;
-		exit();
-	}
+    static function error_out($msg)
+    {
+        echo $msg.PHP_EOL;
+        exit();
+    }
 
-	/*
+    /*
    	* Create a directory
 	* @param string $directory_path
 	* @param int $perms
   	* @return none
    	*/
-	static function create_directory($directory_path, $perms=0777){
-		echo ("Creating the directory: ".$directory_path.PHP_EOL);
-		if (!file_exists($directory_path)){
-			mkdir($directory_path, $perms, true);
-		} else {
-			self::error_out('Error: directory already exists or cannot be written.');
-		}
-	}
+    static function create_directory($directory_path, $perms = 0777)
+    {
+        echo ("Creating the directory: ".$directory_path.PHP_EOL);
+        if (!file_exists($directory_path)) {
+            mkdir($directory_path, $perms, true);
+        } else {
+            self::error_out('Error: directory already exists or cannot be written.');
+        }
+    }
 
-	/*
+    /*
    	* create a text file
    	*/
-	static function create_file($file_path_and_name, $file_content, $overwrite=false){
-		echo ("Setting up the file: ".$file_path_and_name.PHP_EOL);
-		if (!$overwrite){
-			if (!file_exists($file_path_and_name)){
-				file_put_contents($file_path_and_name, $file_content);
-			} else {
-				self::error_out('Error: file already exists or cannot be written.');
-			}
-		} else {
-			file_put_contents($file_path_and_name, $file_content);
-		}
-	}
+    static function create_file($file_path_and_name, $file_content, $overwrite = false)
+    {
+        echo ("Setting up the file: ".$file_path_and_name.PHP_EOL);
+        if (!$overwrite) {
+            if (!file_exists($file_path_and_name)) {
+                file_put_contents($file_path_and_name, $file_content);
+            } else {
+                self::error_out('Error: file already exists or cannot be written.');
+            }
+        } else {
+            file_put_contents($file_path_and_name, $file_content);
+        }
+    }
 
-	/*
+    /*
    	* append a text file
    	*/
-	static function append_file($file_path_and_name, $file_content, $overwrite=false){
-		echo ("Appending the file: ".$file_path_and_name.PHP_EOL);
-		if ($overwrite){
-			file_put_contents($file_path_and_name, $file_content);
-		} else {
-			file_put_contents($file_path_and_name, $file_content, FILE_APPEND);
-		}
-	}
+    static function append_file($file_path_and_name, $file_content, $overwrite = false)
+    {
+        echo ("Appending the file: ".$file_path_and_name.PHP_EOL);
+        if ($overwrite) {
+            file_put_contents($file_path_and_name, $file_content);
+        } else {
+            file_put_contents($file_path_and_name, $file_content, FILE_APPEND);
+        }
+    }
 
-	/*
+    /*
    	* Uses CURL to fetch a URL, and saves it to the file specified by $filename
   	 */
-	static function get_url_and_save($fully_qualified_url, $filename){
-		// strange 400 errors can occur if we don't check to make sure our URL is trimmed up.
-		$fully_qualified_url = trim($fully_qualified_url);
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $fully_qualified_url);
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-		$output = curl_exec($ch);
-		//curl_close($ch);
-		$httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		$httpdebug = curl_getinfo($ch);
-		if ($httpcode == 200){
-			self::create_file($filename, $output);
-			echo("Saved file: ".$filename.PHP_EOL);
-		} else {
-			echo ('error.  http debug: '.var_export($httpdebug, true).PHP_EOL);
-		}
-	}
+    static function get_url_and_save($fully_qualified_url, $filename)
+    {
+        // strange 400 errors can occur if we don't check to make sure our URL is trimmed up.
+        $fully_qualified_url = trim($fully_qualified_url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $fully_qualified_url);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        $output = curl_exec($ch);
+        //curl_close($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $httpdebug = curl_getinfo($ch);
+        if ($httpcode == 200) {
+            self::create_file($filename, $output);
+            echo("Saved file: ".$filename.PHP_EOL);
+        } else {
+            echo ('error.  http debug: '.var_export($httpdebug, true).PHP_EOL);
+        }
+    }
 
-	/*
+    /*
    	* Wrapper and error control for file_get_contents().  Returns the file content as a string.
    	*/
-	static function read_file_to_string($filename){
-		$output = false;
-		try{
-			$output = file_get_contents($filename);
-		} catch (Exception $e){
-			echo ('Error reading file: '.var_export($e, true).PHP_EOL);
-			die();
-		}
-		return $output;
-	}
+    static function read_file_to_string($filename)
+    {
+        $output = false;
+        try {
+            $output = file_get_contents($filename);
+        } catch (Exception $e) {
+            echo ('Error reading file: '.var_export($e, true).PHP_EOL);
+            die();
+        }
+        return $output;
+    }
 
-	/*
+    /*
    	* Wrapper and error control for scandir(). Returns an array of files in the directory specified.
    	*/
-	static function get_directory_list($directory_path){
-		$output = false;
-		try{
-			$output = scandir($directory_path);
-			foreach ($output as $key=>$file){
-				if ( !is_file($directory_path.'/'.$file) ){
-					// just return files please.
-					unset($output[$key]);
-				}
-			}
-		}catch(Exception $e){
-			echo ('Error reading directory: '.var_export($e, true).PHP_EOL);
-			die();
-		}
-		return $output;
-	}
+    static function get_directory_list($directory_path)
+    {
+        $output = false;
+        try {
+            $output = scandir($directory_path);
+            foreach ($output as $key => $file) {
+                if (!is_file($directory_path.'/'.$file)) {
+                    // just return files please.
+                    unset($output[$key]);
+                }
+            }
+        } catch (Exception $e) {
+            echo ('Error reading directory: '.var_export($e, true).PHP_EOL);
+            die();
+        }
+        return $output;
+    }
 
-	/*
+    /*
    	* Execute a command-line command, and echo it's output.
 	* The command is executed by the user who has invoked this script.
    	*/
-	static function execute($cmd){
-	  echo 'Executing '.$cmd.PHP_EOL;
-	  echo(shell_exec($cmd));
-  	}
+    static function execute($cmd)
+    {
+        echo 'Executing '.$cmd.PHP_EOL;
+        echo(shell_exec($cmd));
+    }
 
-	/*
+    /*
   	* we're essentially aliasing php's getopt() functionality.
   	* @return array
   	*/
-	static function get_arguments(){
-		global $argv;
-		$_ARG = array();
-		foreach ($argv as $arg){
-			$temp_arg = explode('=', $arg);
-			$_ARG[$temp_arg[0]] = null;
-			if (isset($temp_arg[1])){
-				$_ARG[$temp_arg[0]] = $temp_arg[1]; 
-			}
-		}
-		return $_ARG;
-	}
-	/* end command-line functions*/
+    static function get_arguments()
+    {
+        global $argv;
+        $_ARG = array();
+        foreach ($argv as $arg) {
+            $temp_arg = explode('=', $arg);
+            $_ARG[$temp_arg[0]] = null;
+            if (isset($temp_arg[1])) {
+                $_ARG[$temp_arg[0]] = $temp_arg[1];
+            }
+        }
+        return $_ARG;
+    }
+    /* end command-line functions*/
 ///////////////////////////////////////////////////////////////////
-
 }
