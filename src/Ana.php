@@ -2,9 +2,6 @@
 
 namespace imonroe\ana;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
-
 class Ana extends Model
 {
     /*
@@ -539,7 +536,6 @@ class Ana extends Model
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         $output = curl_exec($ch);
-        //curl_close($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $httpdebug = curl_getinfo($ch);
         if ($httpcode == 200) {
@@ -548,6 +544,7 @@ class Ana extends Model
         } else {
             echo ('error.  http debug: '.var_export($httpdebug, true).PHP_EOL);
         }
+        curl_close($ch);
     }
 
     /*
