@@ -205,7 +205,17 @@ class Ana extends Model
         // limits to a length; doesn't pretty it up at all.
         return mb_strimwidth($str, 0, $len);
     }
-
+    
+    /*
+    *  useAorAn($text)
+    * 
+    *  determines whether the article for the text should be 'a' or 'an'
+    *  @IN:  $text
+    *  @RET  $string - ["a" | "an"]
+    */
+    public static function useAorAn($text) {
+        return (in_array(strtolower(substr($text, 0, 1)), array('a', 'e', 'i', 'o', 'u')) ? "an": "a" );
+    }
 
     /* end of string manipulation functions */
 ///////////////////////////////////////////////////////////////////	
