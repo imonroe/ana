@@ -2,11 +2,11 @@
 
 namespace imonroe\ana;
 
-class Ana extends Model
+class Ana
 {
     /*
 	This is the newest version of my Ana helper library, that I've converted for use in Laravel.
-	It's probably not of interest to anyone except me, but if you should find some use for it 
+	It's probably not of interest to anyone except me, but if you should find some use for it
 	in some other project, please drop me a line at ian@ianmonroe.com and let me know!
 	*/
 
@@ -17,7 +17,7 @@ class Ana extends Model
     {
     }
 
-///////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////
     /* Date, time functions in this section. */
 
     public static function standard_date_format($timestamp)
@@ -155,7 +155,7 @@ class Ana extends Model
     }
 
     /* end of error handling functions */
-///////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////
     /* Array manipulation functions in this section */
 
     public static function array_sort_by_column(&$arr, $col, $dir = SORT_ASC)
@@ -173,7 +173,7 @@ class Ana extends Model
     }
 
     /* end of Array manipulation functions */
-///////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////
     /* String manipulation functions in this section */
 
     public static function word_limit($haystack, $ubound)
@@ -202,10 +202,10 @@ class Ana extends Model
         // limits to a length; doesn't pretty it up at all.
         return mb_strimwidth($str, 0, $len);
     }
-    
+
     /*
     *  useAorAn($text)
-    * 
+    *
     *  determines whether the article for the text should be 'a' or 'an'
     *  @IN:  $text
     *  @RET  $string - ["a" | "an"]
@@ -215,7 +215,7 @@ class Ana extends Model
     }
 
     /* end of string manipulation functions */
-///////////////////////////////////////////////////////////////////	
+///////////////////////////////////////////////////////////////////
     /* Numeric manipulation functions go here */
 
     public static function even_or_odd($number)
