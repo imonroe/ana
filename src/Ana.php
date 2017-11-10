@@ -171,6 +171,35 @@ class Ana
     {
         return json_decode(json_encode($object), true);
     }
+    
+    /*
+      Utility function to build a tree structure from a flat array where the
+      elements may (or may not) have a parent.
+      Stolen from here: https://stackoverflow.com/questions/4196157/create-array-tree-from-array-list
+
+      syntax: $tree = buildTree($flat_array, 'parentID', 'id');
+              print_r($tree);
+      returns an array.
+    */
+    public static function build_tree($flat, $pidKey, $idKey = null){
+        $grouped = array();
+        foreach ($flat as $sub){
+            $grouped[$sub[$pidKey]][] = $sub;
+        }
+
+        $fnBuilder = function($siblings) use (&$fnBuilder, $grouped, $idKey) {
+            foreach ($siblings as $k => $sibling) {
+                $id = $sibling[$idKey];
+                if(isset($grouped[$id])) {
+                    $sibling['children'] = $fnBuilder($grouped[$id]);
+                }
+                $siblings[$k] = $sibling;
+            }
+            return $siblings;
+        };
+        $tree = $fnBuilder($grouped[0]);
+        return $tree;
+    } // end of build_tree.
 
     /* end of Array manipulation functions */
 ///////////////////////////////////////////////////////////////////
