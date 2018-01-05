@@ -153,6 +153,15 @@ class Ana
             header("HTTP/1.1 500 Internal Server Error");
         }
     }
+    
+    /* dump and die, like with laravel. */
+    public static function dd($var)
+    {
+        echo('<pre>');
+        echo (var_export($var, true));
+        echo('</pre>');
+        die();
+    }
 
     /* end of error handling functions */
 ///////////////////////////////////////////////////////////////////
