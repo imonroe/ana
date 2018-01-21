@@ -153,7 +153,7 @@ class Ana
             header("HTTP/1.1 500 Internal Server Error");
         }
     }
-    
+
     /* dump and die, like with laravel. */
     public static function dd($var)
     {
@@ -180,7 +180,7 @@ class Ana
     {
         return json_decode(json_encode($object), true);
     }
-    
+
     /*
       Utility function to build a tree structure from a flat array where the
       elements may (or may not) have a parent.
@@ -429,8 +429,8 @@ class Ana
     {
         // swiped from here: https://www.chriswiegman.com/2014/05/getting-correct-ip-address-php/
         /*
-			The goal here is to get the actual IP address of the requester, even behind a reverse proxy, etc.
-		*/
+			     The goal here is to get the actual IP address of the requester, even behind a reverse proxy, etc.
+		    */
         //Just get the headers if we can or else use the SERVER global
         if (function_exists('apache_request_headers')) {
             $headers = apache_request_headers();
@@ -455,16 +455,16 @@ class Ana
         // http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php
         // use key 'http' even if you send the request to https://...
         /*
-		$options = array(
-			'http' => array(
-				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-				'method'  => 'POST',
-				'content' => http_build_query($data),
-			),
-		);
-		$context  = stream_context_create($options);
-		$result = file_get_contents($url, false, $context);
-		*/
+    		$options = array(
+    			'http' => array(
+    				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+    				'method'  => 'POST',
+    				'content' => http_build_query($data),
+    			),
+    		);
+    		$context  = stream_context_create($options);
+    		$result = file_get_contents($url, false, $context);
+    		*/
         echo print_r($data);
         $fields_string = '';
         foreach ($data as $key => $value) {
@@ -697,7 +697,7 @@ class Ana
     /* end command-line functions*/
 ///////////////////////////////////////////////////////////////////
     /* Handy Reference functions for common stuff. */
-    
+
     /*
     *  In the United States, you often need a list of all the states.
     *  @return array
@@ -757,5 +757,5 @@ class Ana
           "WY" => "Wyoming"
       );
     }
-    
+
 }
