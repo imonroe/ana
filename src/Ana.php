@@ -83,53 +83,53 @@ class Ana
             $diff = time() - $valid_date;
         if ($diff > 0) {
             if ($diff < 60) {
-                return $diff . " second" . $this->_plural($diff) . " ago";
+                return $diff . " second" . self::plural($diff) . " ago";
             }
             $diff = round($diff / 60);
 
             if ($diff < 60) {
-                return $diff . " minute" . $this->_plural($diff) . " ago";
+                return $diff . " minute" . self::plural($diff) . " ago";
             }
             $diff = round($diff / 60);
 
             if ($diff < 24) {
-                return $diff . " hour" . $this->_plural($diff) . " ago";
+                return $diff . " hour" . self::plural($diff) . " ago";
             }
             $diff = round($diff / 24);
 
             if ($diff < 7) {
-                return "about " . $diff . " day" . $this->_plural($diff) . " ago";
+                return "about " . $diff . " day" . self::plural($diff) . " ago";
             }
             $diff = round($diff / 7);
 
             if ($diff < 4) {
-                return "about " . $diff . " week" . $this->_plural($diff) . " ago";
+                return "about " . $diff . " week" . self::plural($diff) . " ago";
             }
 
             return "on " . date("F j, Y", $valid_date);
         } else {
             if ($diff > -60) {
-                return "in " . -$diff . " second" . $this->_plural($diff);
+                return "in " . -$diff . " second" . self::plural($diff);
             }
             $diff = round($diff / 60);
 
             if ($diff > -60) {
-                return "in " . -$diff . " minute" . $this->_plural($diff);
+                return "in " . -$diff . " minute" . self::plural($diff);
             }
             $diff = round($diff / 60);
 
             if ($diff > -24) {
-                return "in " . -$diff . " hour" . $this->_plural($diff);
+                return "in " . -$diff . " hour" . self::plural($diff);
             }
             $diff = round($diff / 24);
 
             if ($diff > -7) {
-                return "in " . -$diff . " day" . $this->_plural($diff);
+                return "in " . -$diff . " day" . self::plural($diff);
             }
             $diff = round($diff / 7);
 
             if ($diff > -4) {
-                return "in " . -$diff . " week" . $this->_plural($diff);
+                return "in " . -$diff . " week" . self::plural($diff);
             }
 
             return "on " . date("F j, Y", $valid_date);
@@ -214,6 +214,10 @@ class Ana
 ///////////////////////////////////////////////////////////////////
     /* String manipulation functions in this section */
 
+    public static function plural($quantity){
+      return ( intval($quantity) != 1 && intval($quantity) != -1  ) ? 's' : '';
+    }
+
     public static function word_limit($haystack, $ubound)
     {
         $return_val = explode(" ", $haystack);
@@ -258,18 +262,18 @@ class Ana
 
     public static function even_or_odd($number)
     {
-        $int_number = cint($number);
+        $int_number = (int)$number;
         $return_val = '';
         if ($int_number < 0) {
             // normalize negative numbers.
             $int_number = $int_number * -1;
         }
-        if ($int_number = 0) {
+        if ($int_number == 0) {
             $return_val = false;
-        } elseif ($int_number = 1) {
+        } elseif ($int_number == 1) {
             $return_val = 'odd';
         } elseif ($int_number > 1) {
-            if ($int_number % 2) {
+            if (($int_number % 2) <> 0) {
                 $return_val = 'odd';
             } else {
                 $return_val = 'even';
@@ -465,13 +469,13 @@ class Ana
     		$context  = stream_context_create($options);
     		$result = file_get_contents($url, false, $context);
     		*/
-        echo print_r($data);
+        //echo print_r($data);
         $fields_string = '';
         foreach ($data as $key => $value) {
             $fields_string .= $key.'='.$value.'&';
         }
         rtrim($fields_string, '&');
-        echo '------'.$fields_string;
+        //echo '------'.$fields_string;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($data));
