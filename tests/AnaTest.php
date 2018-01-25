@@ -58,7 +58,7 @@ class AnaTest extends TestCase
 
     public function test_print_relative_date()
     {
-      $this->assertEquals('about 1 day ago', Ana::print_relative_date('yesterday'));
+      $this->assertEquals('about 1 day ago', Ana::print_relative_date('26 hours ago'));
       $this->assertEquals('about 2 days ago', Ana::print_relative_date('44 hours ago'));
       $this->assertEquals('about 1 week ago', Ana::print_relative_date('8 days ago'));
       $this->assertEquals('about 2 weeks ago', Ana::print_relative_date('15 days ago'));
@@ -71,9 +71,11 @@ class AnaTest extends TestCase
       $this->assertTrue(true);
     }
 
-    public function test_array_sort_by_column(&$arr, $col, $dir = SORT_ASC)
+    public function test_array_sort_by_column()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
     public function test_object_to_array()
@@ -84,9 +86,11 @@ class AnaTest extends TestCase
       $this->assertEquals(['a' => 1, 'b' => 2], Ana::object_to_array($object));
     }
 
-    public function test_build_tree($flat, $pidKey, $idKey = null)
+    public function test_build_tree()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
     public function test_word_limit()
@@ -97,14 +101,18 @@ class AnaTest extends TestCase
       $this->assertEquals('', Ana::word_limit('This has four words that aren\'t removed', 0));
     }
 
-    public function test_convert_to_utf($input)
+    public function test_convert_to_utf()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_plain_text($input)
+    public function test_plain_text()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
     public function test_trim_string_to_length()
@@ -145,7 +153,7 @@ class AnaTest extends TestCase
       $this->assertTrue($composite_check);
     }
 
-    public function test_random_hex($bytes = 8)
+    public function test_random_hex()
     {
       $this->assertEquals(16, strlen(Ana::random_hex(8)) );
       $this->assertEquals(8, strlen(Ana::random_hex(4)) );
@@ -202,77 +210,104 @@ class AnaTest extends TestCase
 
     public function test_submit_post_request()
     {
-      $this->assertEquals('c', Ana::submit_post_request('http://www.ianmonroe.com/test/post.php', [ 'key1' => 'a', 'key2' => 'b' ]) );
+      $this->expectOutputString('key1:a;key2:b;');
+      Ana::submit_post_request('https://www.ianmonroe.com/test/post.php', [ 'key1' => 'a', 'key2' => 'b' ]);
     }
 
     public function test_loading_spinner()
     {
-      $this->assertTrue(true);
+      $this->assertEquals('<i class="fa fa-cog fa-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span>', Ana::loading_spinner());
     }
 
-    public function test_code_safe_name($string)
+    public function test_code_safe_name()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_cast($destination, $sourceObject)
+    public function test_cast()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_ask_user($prompt)
+    public function test_ask_user()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_error_out($msg)
+    public function test_error_out()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_create_directory($directory_path, $perms = 0777)
+    public function test_create_directory()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_create_file($file_path_and_name, $file_content, $overwrite = false)
+    public function test_create_file()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_append_file($file_path_and_name, $file_content, $overwrite = false)
+    public function test_append_file()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_get_url_and_save($fully_qualified_url, $filename)
+    public function test_get_url_and_save()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_read_file_to_string($filename)
+    public function test_read_file_to_string()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_get_directory_list($directory_path)
+    public function test_get_directory_list()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
-    public function test_execute($cmd)
+    public function test_execute()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
     public function test_get_arguments()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
     public function test_us_states()
     {
-      $this->assertTrue(true);
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
     }
 
 }
