@@ -455,28 +455,13 @@ class Ana
 
     public static function submit_post_request($url, $data)
     {
-        // swiped from:
-        // http://stackoverflow.com/questions/5647461/how-do-i-send-a-post-request-with-php
-        // use key 'http' even if you send the request to https://...
-        /*
-    		$options = array(
-    			'http' => array(
-    				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-    				'method'  => 'POST',
-    				'content' => http_build_query($data),
-    			),
-    		);
-    		$context  = stream_context_create($options);
-    		$result = file_get_contents($url, false, $context);
-    		*/
-        //echo print_r($data);
         $fields_string = '';
         foreach ($data as $key => $value) {
             $fields_string .= $key.'='.$value.'&';
         }
         rtrim($fields_string, '&');
-        //echo '------'.$fields_string;
         $ch = curl_init();
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($data));
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
