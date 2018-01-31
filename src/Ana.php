@@ -166,6 +166,15 @@ class Ana
     /* end of error handling functions */
 ///////////////////////////////////////////////////////////////////
     /* Array manipulation functions in this section */
+    
+    
+    /*
+        Like array_unique(), but works with multi-dimensional arrays.
+    */
+    public static function array_unique_multi($arr){
+        $sanitized_arr = array_map( "unserialize", array_unique( array_map( "serialize", $arr ) ) );
+        return $sanitized_arr;
+    }
 
     public static function array_sort_by_column(&$arr, $col, $dir = SORT_ASC)
     {
