@@ -20,7 +20,7 @@ class Ana
 ///////////////////////////////////////////////////////////////////
     /* Date, time functions in this section. */
 
-    public static function standard_date_format($timestamp)
+    public static function standard_date_format($timestamp = '')
     {
         // My preferred datetime format for presentation
         if ($timestamp == '') {
