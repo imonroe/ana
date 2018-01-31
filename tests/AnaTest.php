@@ -77,6 +77,12 @@ class AnaTest extends TestCase
         'This test has not been implemented yet.'
       );
     }
+    
+    public function test_array_unique_multi(){
+      $this->markTestIncomplete(
+        'This test has not been implemented yet.'
+      );
+    }
 
     public function test_object_to_array()
     {
