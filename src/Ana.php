@@ -378,9 +378,7 @@ class Ana
         } else {
             $protocol = 'http://';
         }
-        $pageURL = $protocol."://";
-        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-        return $pageURL;
+        return $protocol . $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
     }
 
     public static function get_url_segment($number)
