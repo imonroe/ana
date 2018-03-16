@@ -219,6 +219,26 @@ class Ana
         return $tree;
     } // end of build_tree.
 
+    /**
+    * csv_to_array reads a CSV file, and returns a nicely formatted array.
+    * @link http://gist.github.com/385876
+    */
+    public static function csv_to_array($filename='', $delimiter=','){
+        if(!file_exists($filename) || !is_readable($filename)){ return FALSE; }
+        $header = NULL;
+        $data = array();
+        if (($handle = fopen($filename, 'r')) !== FALSE){
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE){
+                if(!$header)
+                    $header = $row;
+                else
+                    $data[] = array_combine($header, $row);
+            }
+            fclose($handle);
+        }
+        return $data;
+    } // end of csv_to_array().
+    
     /* end of Array manipulation functions */
 ///////////////////////////////////////////////////////////////////
     /* String manipulation functions in this section */
