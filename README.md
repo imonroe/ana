@@ -15,6 +15,8 @@ $ composer require imonroe/ana
 ## Usage
 
 ``` php
+use imonroe\ana\Ana;
+
 $formatted_date = Ana::standard_date_format(strtotime('yesterday'));
 
 if (Ana::even_or_odd(2) == 'even'){
@@ -26,7 +28,7 @@ if (Ana::is_valid_link('https://www.google.com')){
 }
 
 // grab a file from the web and save it to a text file.
-Ana::create_file('sample.txt', Ana:: quick_curl('https://www.sample.com/index.html'), true); 
+Ana::create_file('sample.txt', Ana::quick_curl('https://www.sample.com/index.html'), true); 
 
 ```
 
