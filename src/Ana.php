@@ -566,6 +566,15 @@ class Ana
         return $input;
     }
 
+    /**
+     * Says something to the user.
+     * @param string $msg
+     * @return none
+     */
+    static function say($msg){
+        echo($msg . PHP_EOL);
+    }
+
     /*
 	* Generates an error message and exits the program.
 	* @param string $msg
@@ -710,6 +719,54 @@ class Ana
         }
         return $_ARG;
     }
+
+    /**
+     * Replace a line in a text file.
+     * 
+     * Use this function to replace an entire single line in a text file.
+     * 
+     * The $filename parameter specifies the file you are working with.
+     * The $line_to_change is the text pattern to search for in the file.
+     *   Be careful how you specify this string and make sure it matches ONLY in the lines you are interested in.
+     * The $change_to string specifies what to replace the line with.
+     * 
+     * @param string $filename
+     * @param string $line_to_change
+     * @param string $change_to
+     * @return bool
+     */
+    static function replace_line_in_file(String $filename='', String $line_to_change='', String $change_to='')
+    {
+        $replacement_made = false;
+        if (is_writable($filename)){
+            self::say('Reading file: '.$filename);
+            $file = file($filename);
+        } else {
+            self::say('Could not find the file, or it was not writable: '.$filename);
+            return false;
+        }
+        
+        self::say('Making replacement.');
+        foreach ($file as $line_number => $line){
+            if (!(strrpos($line, $line_to_change)===FALSE)){
+                $file[$line_number] = $change_to . PHP_EOL;
+                $replacement_made = true;
+            }
+        }
+
+        if ($replacement_made){
+            self::say('Replacement made successfully.');
+            $f = implode('', $file);
+            file_put_contents($filename, $f);
+            self::say('Saving file.');
+        } else {
+            self::say('Could not find anything to replace.');
+        }
+
+        return $replacement_made;
+    }
+
+
     /* end command-line functions*/
 ///////////////////////////////////////////////////////////////////
     /* Handy Reference functions for common stuff. */
