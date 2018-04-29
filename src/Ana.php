@@ -10,13 +10,6 @@ class Ana
 	in some other project, please drop me a line at ian@ianmonroe.com and let me know!
 	*/
 
-    function __construct()
-    {
-    }
-    function __destruct()
-    {
-    }
-
 ///////////////////////////////////////////////////////////////////
     /* Date, time functions in this section. */
 
@@ -281,7 +274,7 @@ class Ana
     *  @IN:  $text
     *  @RET  $string - ["a" | "an"]
     */
-    public static function useAorAn($text) {
+    public static function use_a_or_an($text) {
         return (in_array(strtolower(substr($text, 0, 1)), array('a', 'e', 'i', 'o', 'u')) ? "an": "a" );
     }
 
@@ -602,6 +595,32 @@ class Ana
         }
     }
 
+    /**
+     * Remove a directory if it exists.
+     * 
+     * Swiped from: https://github.com/imonroe/laravel-packager/blob/master/src/PackagerHelper.php
+     *
+     * @param  string $path Path of the directory to remove.
+     *
+     * @return void
+     */
+    static function remove_directory($path)
+    {
+        if ($path == '/') {
+            return false;
+        }
+        $files = array_diff(scandir($path), ['.', '..']);
+        foreach ($files as $file) {
+            if (is_dir("$path/$file")) {
+                self::removeDir("$path/$file");
+            } else {
+                @chmod("$path/$file", 0777);
+                @unlink("$path/$file");
+            }
+        }
+        return rmdir($path);
+    }
+
     /*
    	* create a text file
    	*/
@@ -766,6 +785,25 @@ class Ana
         return $replacement_made;
     }
 
+
+    /**
+     * Open haystack, find and replace needles, save haystack.
+     * 
+     *
+     * @param  string $oldFile The haystack
+     * @param  mixed  $search  String or array to look for (the needles)
+     * @param  mixed  $replace What to replace the needles for?
+     * @param  string $newFile Where to save, defaults to $oldFile
+     *
+     * @return void
+     */
+    static function replace_and_save($oldFile, $search, $replace, $newFile = null)
+    {
+        $newFile = ($newFile == null) ? $oldFile : $newFile;
+        $file = self::read_file_to_string($oldFile);
+        $replacing = str_replace($search, $replace, $file);
+        self::create_file($newFile, $replacing, $overwrite = true);
+    }
 
     /* end command-line functions*/
 ///////////////////////////////////////////////////////////////////
