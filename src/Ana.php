@@ -717,8 +717,11 @@ class Ana
    	*/
     static function execute($cmd)
     {
-        echo 'Executing '.$cmd.PHP_EOL;
-        echo(shell_exec($cmd));
+        $result = '';
+        echo 'Executing ' . $cmd . PHP_EOL;
+        $result = shell_exec($cmd);
+        echo($result);
+        return $result;
     }
 
     /*
