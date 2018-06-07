@@ -132,10 +132,10 @@ class AnaTest extends TestCase
 
     public function test_useAorAn()
     {
-        $this->assertEquals('a', Ana::useAorAn('book'));
-        $this->assertEquals('a', Ana::useAorAn('table'));
-        $this->assertEquals('an', Ana::useAorAn('evening'));
-        $this->assertEquals('an', Ana::useAorAn('index'));
+        $this->assertEquals('a', Ana::use_a_or_an('book'));
+        $this->assertEquals('a', Ana::use_a_or_an('table'));
+        $this->assertEquals('an', Ana::use_a_or_an('evening'));
+        $this->assertEquals('an', Ana::use_a_or_an('index'));
     }
 
     public function test_even_or_odd()
