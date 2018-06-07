@@ -164,8 +164,9 @@ class Ana
     /*
         Like array_unique(), but works with multi-dimensional arrays.
     */
-    public static function array_unique_multi($arr){
-        $sanitized_arr = array_map( "unserialize", array_unique( array_map( "serialize", $arr ) ) );
+    public static function array_unique_multi($arr)
+    {
+        $sanitized_arr = array_map("unserialize", array_unique(array_map("serialize", $arr)));
         return $sanitized_arr;
     }
 
@@ -192,16 +193,17 @@ class Ana
               print_r($tree);
       returns an array.
     */
-    public static function build_tree($flat, $pidKey, $idKey = null){
+    public static function build_tree($flat, $pidKey, $idKey = null)
+    {
         $grouped = array();
-        foreach ($flat as $sub){
+        foreach ($flat as $sub) {
             $grouped[$sub[$pidKey]][] = $sub;
         }
 
-        $fnBuilder = function($siblings) use (&$fnBuilder, $grouped, $idKey) {
+        $fnBuilder = function ($siblings) use (&$fnBuilder, $grouped, $idKey) {
             foreach ($siblings as $k => $sibling) {
                 $id = $sibling[$idKey];
-                if(isset($grouped[$id])) {
+                if (isset($grouped[$id])) {
                     $sibling['children'] = $fnBuilder($grouped[$id]);
                 }
                 $siblings[$k] = $sibling;
@@ -216,16 +218,20 @@ class Ana
     * csv_to_array reads a CSV file, and returns a nicely formatted array.
     * @link http://gist.github.com/385876
     */
-    public static function csv_to_array($filename='', $delimiter=','){
-        if(!file_exists($filename) || !is_readable($filename)){ return FALSE; }
-        $header = NULL;
+    public static function csv_to_array($filename = '', $delimiter = ',')
+    {
+        if (!file_exists($filename) || !is_readable($filename)) {
+            return false;
+        }
+        $header = null;
         $data = array();
-        if (($handle = fopen($filename, 'r')) !== FALSE){
-            while (($row = fgetcsv($handle, 1000, $delimiter)) !== FALSE){
-                if(!$header)
+        if (($handle = fopen($filename, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
+                if (!$header) {
                     $header = $row;
-                else
+                } else {
                     $data[] = array_combine($header, $row);
+                }
             }
             fclose($handle);
         }
@@ -236,8 +242,9 @@ class Ana
 ///////////////////////////////////////////////////////////////////
     /* String manipulation functions in this section */
 
-    public static function plural($quantity){
-      return ( intval($quantity) != 1 && intval($quantity) != -1  ) ? 's' : '';
+    public static function plural($quantity)
+    {
+        return ( intval($quantity) != 1 && intval($quantity) != -1  ) ? 's' : '';
     }
 
     public static function word_limit($haystack, $ubound)
@@ -274,7 +281,8 @@ class Ana
     *  @IN:  $text
     *  @RET  $string - ["a" | "an"]
     */
-    public static function use_a_or_an($text) {
+    public static function use_a_or_an($text)
+    {
         return (in_array(strtolower(substr($text, 0, 1)), array('a', 'e', 'i', 'o', 'u')) ? "an": "a" );
     }
 
@@ -340,37 +348,41 @@ class Ana
     // floor(sqrt(N)) characters.
     public static function generateStrongPassword($length = 9, $add_dashes = false, $available_sets = 'luds')
     {
-    	$sets = array();
-    	if(strpos($available_sets, 'l') !== false)
-    		$sets[] = 'abcdefghjkmnpqrstuvwxyz';
-    	if(strpos($available_sets, 'u') !== false)
-    		$sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
-    	if(strpos($available_sets, 'd') !== false)
-    		$sets[] = '23456789';
-    	if(strpos($available_sets, 's') !== false)
-    		$sets[] = '!@#$%&*?';
-    	$all = '';
-    	$password = '';
-    	foreach($sets as $set)
-    	{
-    		$password .= $set[array_rand(str_split($set))];
-    		$all .= $set;
-    	}
-    	$all = str_split($all);
-    	for($i = 0; $i < $length - count($sets); $i++)
-    		$password .= $all[array_rand($all)];
-    	$password = str_shuffle($password);
-    	if(!$add_dashes)
-    		return $password;
-    	$dash_len = floor(sqrt($length));
-    	$dash_str = '';
-    	while(strlen($password) > $dash_len)
-    	{
-    		$dash_str .= substr($password, 0, $dash_len) . '-';
-    		$password = substr($password, $dash_len);
-    	}
-    	$dash_str .= $password;
-    	return $dash_str;
+        $sets = array();
+        if (strpos($available_sets, 'l') !== false) {
+            $sets[] = 'abcdefghjkmnpqrstuvwxyz';
+        }
+        if (strpos($available_sets, 'u') !== false) {
+            $sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+        }
+        if (strpos($available_sets, 'd') !== false) {
+            $sets[] = '23456789';
+        }
+        if (strpos($available_sets, 's') !== false) {
+            $sets[] = '!@#$%&*?';
+        }
+        $all = '';
+        $password = '';
+        foreach ($sets as $set) {
+            $password .= $set[array_rand(str_split($set))];
+            $all .= $set;
+        }
+        $all = str_split($all);
+        for ($i = 0; $i < $length - count($sets); $i++) {
+            $password .= $all[array_rand($all)];
+        }
+        $password = str_shuffle($password);
+        if (!$add_dashes) {
+            return $password;
+        }
+        $dash_len = floor(sqrt($length));
+        $dash_str = '';
+        while (strlen($password) > $dash_len) {
+            $dash_str .= substr($password, 0, $dash_len) . '-';
+            $password = substr($password, $dash_len);
+        }
+        $dash_str .= $password;
+        return $dash_str;
     }
 
     public static function create_nonce()
@@ -564,7 +576,8 @@ class Ana
      * @param string $msg
      * @return none
      */
-    static function say($msg){
+    static function say($msg)
+    {
         echo($msg . PHP_EOL);
     }
 
@@ -597,7 +610,7 @@ class Ana
 
     /**
      * Remove a directory if it exists.
-     * 
+     *
      * Swiped from: https://github.com/imonroe/laravel-packager/blob/master/src/PackagerHelper.php
      *
      * @param  string $path Path of the directory to remove.
@@ -744,23 +757,23 @@ class Ana
 
     /**
      * Replace a line in a text file.
-     * 
+     *
      * Use this function to replace an entire single line in a text file.
-     * 
+     *
      * The $filename parameter specifies the file you are working with.
      * The $line_to_change is the text pattern to search for in the file.
      *   Be careful how you specify this string and make sure it matches ONLY in the lines you are interested in.
      * The $change_to string specifies what to replace the line with.
-     * 
+     *
      * @param string $filename
      * @param string $line_to_change
      * @param string $change_to
      * @return bool
      */
-    static function replace_line_in_file(String $filename='', String $line_to_change='', String $change_to='')
+    static function replace_line_in_file(String $filename = '', String $line_to_change = '', String $change_to = '')
     {
         $replacement_made = false;
-        if (is_writable($filename)){
+        if (is_writable($filename)) {
             self::say('Reading file: '.$filename);
             $file = file($filename);
         } else {
@@ -769,14 +782,14 @@ class Ana
         }
         
         self::say('Making replacement.');
-        foreach ($file as $line_number => $line){
-            if (!(strrpos($line, $line_to_change)===FALSE)){
+        foreach ($file as $line_number => $line) {
+            if (!(strrpos($line, $line_to_change)===false)) {
                 $file[$line_number] = $change_to . PHP_EOL;
                 $replacement_made = true;
             }
         }
 
-        if ($replacement_made){
+        if ($replacement_made) {
             self::say('Replacement made successfully.');
             $f = implode('', $file);
             file_put_contents($filename, $f);
@@ -791,7 +804,7 @@ class Ana
 
     /**
      * Open haystack, find and replace needles, save haystack.
-     * 
+     *
      *
      * @param  string $oldFile The haystack
      * @param  mixed  $search  String or array to look for (the needles)
@@ -816,8 +829,9 @@ class Ana
     *  In the United States, you often need a list of all the states.
     *  @return array
     */
-    static function us_states(){
-      return array(
+    static function us_states()
+    {
+        return array(
           "AL" => "Alabama",
           "AK" => "Alaska",
           "AZ" => "Arizona",
@@ -869,7 +883,6 @@ class Ana
           "WV" => "West Virginia",
           "WI" => "Wisconsin",
           "WY" => "Wyoming"
-      );
+        );
     }
-
 }
