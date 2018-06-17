@@ -4,16 +4,20 @@ All Notable changes to `ana` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## NEXT - YYYY-MM-DD
+## 1.0.5 - 2018-06-16
 
 ### Added
-- Nothing
+- say() CLI function
+- replace_and_save() cli function
+- remove_directory() cli function
+- run_interactive() cli function
+- updated tests
 
 ### Deprecated
 - Nothing
 
 ### Fixed
-- Nothing
+- Style fixes
 
 ### Removed
 - Nothing
