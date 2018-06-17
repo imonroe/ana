@@ -737,6 +737,28 @@ class Ana
         return $result;
     }
 
+    /**
+     * Execute a command-line command with interaction.
+     * This can be used to string together php scripts
+     * or other shell commands that require user input.
+     * 
+     * Returns the return value of the command executed.
+     */
+    static function run_interactive($cmd)
+    {
+        $descriptors = array(
+          0 => array ("file", "php://stdin", "r"),
+          1 => array ("file", "php://stdout", "w"),
+          2 => array ("file", "php://stdout", "w")
+        );
+        $process = proc_open($cmd, $descriptors, $pipes);
+        if (is_resource($process)) {
+          $return_value = proc_close($process);
+          return $return_value;
+        }
+    }
+
+
     /*
   	* we're essentially aliasing php's getopt() functionality.
   	* @return array
